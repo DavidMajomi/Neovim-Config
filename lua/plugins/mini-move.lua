@@ -12,6 +12,11 @@ return {
         line_down = "",
         line_up = "",
       },
+
+      options = {
+        -- Automatically reindent selection during linewise vertical move
+        reindent_linewise = true,
+      },
     },
   },
 }

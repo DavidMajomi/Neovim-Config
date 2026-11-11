@@ -12,6 +12,5 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.wrap = true -- wrap long lines instead of scrolling sideways
     vim.opt_local.linebreak = true -- wrap at word boundaries
     vim.opt_local.spell = false -- LazyVim enables spellcheck; red underlines add noise
-    vim.opt_local.relativenumber = false -- calmer gutter for writing
   end,
 })

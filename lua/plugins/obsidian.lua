@@ -5,6 +5,10 @@ return {
   ft = "markdown", -- load only when a Markdown file is opened
   dependencies = { "nvim-lua/plenary.nvim" }, -- required utility library
 
+  -- PERF: obsidian-ls registers a recursive file watcher on the whole vault. Without `inotifywait`
+  -- (apt: inotify-tools) Neovim falls back to a slow Lua directory walk -> multi-second freeze on
+  -- first .md open. Keep inotify-tools installed on any machine that uses this config.
+
   opts = {
     legacy_commands = false, -- use only the new `:Obsidian <subcommand>` commands
 
@@ -13,17 +17,12 @@ return {
     workspaces = {
       -- [SPECIFIC] Hard-coded path. Change it, or it breaks on other machines.
       { name = "agentic", path = "~/dev/agentic-workspace/" },
-
-      -- [GENERAL] Fallback: uses the directory Neovim was launched from.
-      -- Set once at startup; ignores later :cd. Listed second so the specific one wins.
-      {
-        name = "cwd",
-        path = function()
-          return vim.fn.getcwd()
-        end,
-        overrides = { frontmatter = { enabled = false } }, -- don't add YAML headers in code repos
-      },
+      -- The `cwd` fallback was removed: it made every launch directory a vault,
+      -- causing a slow scan the first time a Markdown file was opened.
     },
+
+    -- Skip dependency/build dirs: ~1,770 of the vault's ~1,810 .md files live in web/node_modules.
+    file = { ignore_filters = { "node_modules", ".git", "dist", "build", ".next", ".env" } },
 
     new_notes_location = "current_dir", -- new notes go next to the current file
 

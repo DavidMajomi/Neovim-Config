@@ -6,3 +6,10 @@
 
 -- Overide default root detection to use only git and cwd rather than other files like Dockerfiles.
 vim.g.root_spec = { { ".git" }, "cwd" }
+
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.clipboard = "unnamedplus"
+
+-- Force true color
+vim.opt.termguicolors = true
